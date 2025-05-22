@@ -39,6 +39,8 @@ namespace NINA.DiscordAlert.DiscordAlertSequenceItems {
 
         [JsonProperty]
         public string Text { get; set; }
+        [JsonProperty]
+        public bool PlainText { get; set; }
 
         private readonly ICameraMediator _cameraMediator;
         private readonly ITelescopeMediator _telescopeMediator;
@@ -49,9 +51,9 @@ namespace NINA.DiscordAlert.DiscordAlertSequenceItems {
         public override async Task Execute(IProgress<ApplicationStatus> progress, CancellationToken token) {
             try {
                 
-                Logger.Debug($"Sending Message - Text={Text}  Entity={this}");
+                Logger.Debug($"Sending Message - Text={Text} PlainText={PlainText} Entity={this}");
                 var templateValues = Helpers.Template.GetSequenceTemplateValues(this, _telescopeMediator, _cameraMediator, _filterWheelMediator, _focuserMediator, _rotatorMediator);
-                await Helpers.Discord.SendMessage(MessageType.Information, Text, this, token, templateValues: templateValues);
+                await Helpers.Discord.SendMessage(MessageType.Information, Text, this, token, templateValues: templateValues, plainText: PlainText);
             } catch (Exception ex) {
                 Logger.Error(ex);
             }
@@ -64,13 +66,14 @@ namespace NINA.DiscordAlert.DiscordAlertSequenceItems {
                 Name = Name,
                 Category = Category,
                 Description = Description,
-                Text = Text
+                Text = Text,
+                PlainText = PlainText
             };
         }
 
         [ExcludeFromCodeCoverage]
         public override string ToString() {
-            return $"Category: {Category}, Item: {nameof(DiscordMessageInstruction)}, Text: {Text}";
+            return $"Category: {Category}, Item: {nameof(DiscordMessageInstruction)}, Text: {Text}, PlainText: {PlainText}";
         }
     }
 }

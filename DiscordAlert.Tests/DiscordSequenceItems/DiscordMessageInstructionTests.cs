@@ -34,7 +34,7 @@ namespace DiscordAlert.Tests.DiscordSequenceItems {
             discordMessageInstruction.Text = expectedMessage;
             await discordMessageInstruction.Execute(Mock.Of<IProgress<ApplicationStatus>>(), cancelationTokenSource.Token);
 
-            discordHelperMock.Verify(o => o.SendMessage(MessageType.Information, expectedMessage, discordMessageInstruction, cancelationTokenSource.Token, imagePatterns, null, null), Times.Once);
+            discordHelperMock.Verify(o => o.SendMessage(MessageType.Information, expectedMessage, discordMessageInstruction, cancelationTokenSource.Token, imagePatterns, null, null, true), Times.Once);
         }
 
         [Test]
@@ -57,7 +57,7 @@ namespace DiscordAlert.Tests.DiscordSequenceItems {
             discordMessageInstruction.Text = expectedMessage;
             Assert.DoesNotThrowAsync(async () => await discordMessageInstruction.Execute(Mock.Of<IProgress<ApplicationStatus>>(), cancelationTokenSource.Token));
 
-            discordHelperMock.Verify(o => o.SendMessage(It.IsAny<MessageType>(), It.IsAny<string>(), It.IsAny<ISequenceEntity>(), It.IsAny<CancellationToken>(), It.IsAny<ImagePatterns>(), It.IsAny<String>(), It.IsAny<Exception>()), Times.Never);
+            discordHelperMock.Verify(o => o.SendMessage(It.IsAny<MessageType>(), It.IsAny<string>(), It.IsAny<ISequenceEntity>(), It.IsAny<CancellationToken>(), It.IsAny<ImagePatterns>(), It.IsAny<String>(), It.IsAny<Exception>(), It.IsAny<bool>()), Times.Never);
         }
     }
 }

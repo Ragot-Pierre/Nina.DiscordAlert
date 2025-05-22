@@ -41,7 +41,7 @@ namespace DiscordAlert.Tests.DiscordSequenceItems {
             alertOnError.SequenceBlockInitialize();
             mockFailure.Raise(o => o.OnFailure += null, new SequenceFailureEventArgs(mockSequenceEntity.Object, exception));
 
-            mockDiscordHelper.Verify(o => o.SendMessage(MessageType.Error, It.IsAny<string>(), mockSequenceEntity.Object, It.IsAny<CancellationToken>(), imagePatterns, null, exception), Times.Once);
+            mockDiscordHelper.Verify(o => o.SendMessage(MessageType.Error, It.IsAny<string>(), mockSequenceEntity.Object, It.IsAny<CancellationToken>(), imagePatterns, null, exception, true), Times.Once);
         }
 
         [Test]
@@ -58,7 +58,7 @@ namespace DiscordAlert.Tests.DiscordSequenceItems {
             var alertOnError = new DiscordAlertOnErrorTrigger(Mock.Of<ICameraMediator>(), Mock.Of<ITelescopeMediator>(), Mock.Of<IFilterWheelMediator>(), Mock.Of<IFocuserMediator>(), Mock.Of<IRotatorMediator>());
             var mockSequenceEntity = new Mock<ISequenceEntity>();
             mockSequenceEntity.Setup(o => o.Name).Returns("Failure Item");
-            mockDiscordHelper.Setup(o => o.SendMessage(It.IsAny<MessageType>(), It.IsAny<string>(), It.IsAny<ISequenceEntity>(), It.IsAny<CancellationToken>(), null, null, It.IsAny<Exception>())).Throws(new Exception("TEST"));
+            mockDiscordHelper.Setup(o => o.SendMessage(It.IsAny<MessageType>(), It.IsAny<string>(), It.IsAny<ISequenceEntity>(), It.IsAny<CancellationToken>(), null, null, It.IsAny<Exception>(), true)).Throws(new Exception("TEST"));
 
             Assert.DoesNotThrow(() => mockFailure.Raise(o => o.OnFailure += null, new SequenceFailureEventArgs(mockSequenceEntity.Object, new Exception("Test exception"))));      
         }

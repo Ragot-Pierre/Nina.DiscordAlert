@@ -107,7 +107,7 @@ namespace DiscordAlert.Tests.DiscordSequenceItems {
             imagingMediatorMock.Setup(o => o.PrepareImage(imageDataMock.Object, It.IsAny<PrepareImageParameters>(), It.IsAny<CancellationToken>())).ReturnsAsync(renderedImageMock.Object);
             renderedImageMock.Setup(o => o.Image).Returns(bitmap);
             Helpers.SetDiscordHelper(discordHelperMock.Object);
-            discordHelperMock.Setup(o => o.SendMessage(MessageType.Information, expectedText, expectedContainer, cancelTokenSource.Token, imagePatterns, expectedTempPath, null)).Callback(() => { 
+            discordHelperMock.Setup(o => o.SendMessage(MessageType.Information, expectedText, expectedContainer, cancelTokenSource.Token, imagePatterns, expectedTempPath, null, true)).Callback(() => { 
                 mre.Set(); 
             });
 
@@ -190,7 +190,7 @@ namespace DiscordAlert.Tests.DiscordSequenceItems {
             var imagedSaveArgs = ImageTestUtility.GenerateImageSavedEventArgs(savedImageMock.Object);
             imagingMediatorMock.Setup(o => o.PrepareImage(imageDataMock.Object, It.IsAny<PrepareImageParameters>(), It.IsAny<CancellationToken>())).ReturnsAsync(renderedImageMock.Object);
             renderedImageMock.Setup(o => o.Image).Returns(bitmap);
-            discordHelperMock.Setup(o => o.SendMessage(It.IsAny<MessageType>(), It.IsAny<string>(), It.IsAny<ISequenceEntity>(), It.IsAny<CancellationToken>(), It.IsAny<ImagePatterns>(), It.IsAny<string>(), It.IsAny<Exception>()))
+            discordHelperMock.Setup(o => o.SendMessage(It.IsAny<MessageType>(), It.IsAny<string>(), It.IsAny<ISequenceEntity>(), It.IsAny<CancellationToken>(), It.IsAny<ImagePatterns>(), It.IsAny<string>(), It.IsAny<Exception>(), It.IsAny<bool>()))
                 .Callback(() => {
                     mre.Set();
                 })
@@ -206,7 +206,7 @@ namespace DiscordAlert.Tests.DiscordSequenceItems {
             Assert.DoesNotThrow(() => imageSaveMediator.Raise(o => o.ImageSaved += null, imagedSaveArgs));
 
             Assert.IsTrue(mre.WaitOne(TimeSpan.FromSeconds(5)));
-            discordHelperMock.Verify(o => o.SendMessage(MessageType.Information, expectedText, expectedContainer, cancelTokenSource.Token, imagePatterns, expectedTempPath, null), Times.Once);
+            discordHelperMock.Verify(o => o.SendMessage(MessageType.Information, expectedText, expectedContainer, cancelTokenSource.Token, imagePatterns, expectedTempPath, null, true), Times.Once);
 
         }
     }

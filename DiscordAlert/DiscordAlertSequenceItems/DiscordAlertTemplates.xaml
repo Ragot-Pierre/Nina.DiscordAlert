@@ -16,6 +16,11 @@
         <nina:SequenceBlockView>
             <nina:SequenceBlockView.SequenceItemContent>
                 <DockPanel LastChildFill="True">
+                    <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Text="Plain text ?" />
+                    <CheckBox
+                        DockPanel.Dock="Left"
+                        Margin="5,0,0,0"
+                        IsChecked="{Binding PlainText}" />
                     <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Text="Message" />
                     <TextBox
                         DockPanel.Dock="Left"
